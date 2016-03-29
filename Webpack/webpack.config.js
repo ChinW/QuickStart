@@ -1,8 +1,8 @@
 var webpack = require("webpack"),
 	HtmlWebPackPlugin = require("html-webpack-plugin"),
 	commonsPlugin = new webpack.optimize.CommonsChunkPlugin({
-		name:"commons",
-		filename:"common.js"
+		name: "common",
+		filename: "common.js"
 	}),
 	path = require("path"),
 	ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -11,13 +11,13 @@ var srcPath = path.join(__dirname, "src");
 var __DEV__ = process.env.NODE_ENV !== "production"; //Development Symbolic
 var __APP_TITLE__ = "My APP";
 var outputPublicPath = "http://localhost:8081/build/";
-var indexEntry = [srcPath + "/js/index.jsx"];
+var indexEntry = [srcPath + "/scripts/index.jsx"];
 
 if(__DEV__){
 	indexEntry = [
 			'webpack-dev-server/client?http://localhost:8081/',
 	    	'webpack/hot/only-dev-server',
-			srcPath + "/js/index.jsx"
+			srcPath + "/scripts/index.jsx"
 		]
 }else{
 	outputPublicPath = "./";

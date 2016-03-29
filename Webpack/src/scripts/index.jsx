@@ -1,8 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "../..//node_modules/bootstrap/dist/css/bootstrap.min.css"
 
-console.log(document.getElementsByTagName("body"))
 ReactDOM.render(
 	<div className="globalWrapper">
 		<div id="banner">
@@ -11,12 +9,14 @@ ReactDOM.render(
 			<div id="left-side-bar">
 			</div>
 			<div id="content">
+				1234
 			</div>
 		</div>
 	</div>
 	,
-	document.getElementById("htmlBody")
+	document.getElementById("ContentBody")
 );
+
 // var Avatar = React.createClass({
 // 	render:function(){
 // 		return (
