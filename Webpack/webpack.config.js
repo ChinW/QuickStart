@@ -7,20 +7,31 @@ var webpack = require("webpack"),
 	path = require("path"),
 	ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var srcPath = path.join(__dirname,"src");
+var srcPath = path.join(__dirname, "src");
+var __DEV__ = process.env.NODE_ENV !== "production"; //Development Symbolic
+var __APP_TITLE__ = "My APP";
+var outputPublicPath = "http://localhost:8081/build/";
+var indexEntry = [srcPath + "/js/index.jsx"];
+
+if(__DEV__){
+	indexEntry = [
+			'webpack-dev-server/client?http://localhost:8081/',
+	    	'webpack/hot/only-dev-server',
+			srcPath + "/js/index.jsx"
+		]
+}else{
+	outputPublicPath = "./";
+}
 
 module.exports = {
 	entry: {
-		p1: [
-		'webpack-dev-server/client?http://localhost:8080/',
-    	'webpack/hot/only-dev-server',
-		srcPath + "/js/main.jsx"
-		] 
+		index: indexEntry
 	},
 	output:{
-		publicPath:"http://localhost:8080/build/",
-		path:"./build" ,
-		filename:"./[name].bundle.js"
+		publicPath: outputPublicPath,
+		path: "./build",
+		filename: "./[name].bundle.js",
+		sourceMapFilename: "[file].map"
 	},
 	module:{
 		loaders:[
@@ -29,13 +40,13 @@ module.exports = {
 			{ test: /\.sass$/, loader: "style-loader!css-loader!autoprefixer-loader!sass-loader"},
 			// Below code used for extract css out
 			// { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")},
-			{ test:/\.(png|jpg|ttf|eot|svg|woff(2)?)$/, loader: "url-loader?limit=8192"},
+			{ test: /\.(png|jpg|ttf|eot|svg|woff(2)?)$/, loader: "url-loader?limit=8192"},// inline base64 URLs for <=8k images
             { test: /\.js$/, loader: 'babel-loader',query: {
                   presets: 'es2015',
                 },
                 exclude:/node_modules/
             },
-            { test:/\.jsx?$/, loader: "react-hot-loader!babel-loader?presets[]=react,presets[]=es2015",
+            { test: /\.jsx?$/, loader: "react-hot-loader!babel-loader?presets[]=react,presets[]=es2015",
             	exclude: /(node_modules|bower_components)/,
         	}
 		]
@@ -49,9 +60,9 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoErrorsPlugin(),
 		new HtmlWebPackPlugin({
-			inject:true,
-			title:"My App",
-			filename:"index.html",
+			inject: true,
+			title: __APP_TITLE__,
+			filename: "index.html",
 			template: srcPath + "/template/my-app.html",
 			hash:true,
 		}),
@@ -59,12 +70,17 @@ module.exports = {
 			$: "jquery",
 			jQuery: "jquery",
 			"window.jQuery": "jquery",
+		}),
+		new webpack.DefinePlugin({
+			"process.enb": {
+				ENV: JSON.stringify("production")
+			},
 		})
 	],
 	devServer:{
-		historyApiFallback:true,
-		hot:true,
-		inline:true,
-		progress:true,
+		historyApiFallback: true,
+		hot: true,
+		inline: true,
+		progress: true,
 	}
 }
