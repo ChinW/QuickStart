@@ -9,7 +9,7 @@ var webpack = require("webpack"),
 
 var srcPath = path.join(__dirname, "src");
 var __DEV__ = process.env.NODE_ENV !== "production"; //Development Symbolic
-var __APP_TITLE__ = "My APP";
+var __APP_NAME__ = "My APP";
 var outputPublicPath = "http://localhost:8081/build/";
 var indexEntry = [srcPath + "/scripts/index.jsx"];
 
@@ -61,10 +61,10 @@ module.exports = {
 		new webpack.NoErrorsPlugin(),
 		new HtmlWebPackPlugin({
 			inject: true,
-			title: __APP_TITLE__,
+			title: __APP_NAME__,
 			filename: "index.html",
 			template: srcPath + "/template/my-app.html",
-			hash:true,
+			hash: true,
 		}),
 		new webpack.ProvidePlugin({
 			$: "jquery",
@@ -72,8 +72,9 @@ module.exports = {
 			"window.jQuery": "jquery",
 		}),
 		new webpack.DefinePlugin({
-			"_APP_": {
-				ENV: JSON.stringify("production")
+			"__APP__": {
+				__ENV__: JSON.stringify("production"),
+				__APP_NAME__: __APP_NAME__
 			},
 		})
 	],
