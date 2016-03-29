@@ -72,7 +72,7 @@ module.exports = {
 			"window.jQuery": "jquery",
 		}),
 		new webpack.DefinePlugin({
-			"process.enb": {
+			"_APP_": {
 				ENV: JSON.stringify("production")
 			},
 		})
