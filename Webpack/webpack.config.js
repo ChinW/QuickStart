@@ -37,7 +37,7 @@ module.exports = {
 		loaders:[
 			{ test: /\.less$/, loader: "style-loader!css-loader!less-loader"},
 			{ test: /\.css$/, loader: "style-loader!css-loader"},
-			{ test: /\.sass$/, loader: "style-loader!css-loader!autoprefixer-loader!sass-loader"},
+			{ test: /\.(scss|sass)$/, loader: "style-loader!css-loader!autoprefixer-loader!sass-loader"},
 			// Below code used for extract css out
 			// { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")},
 			{ test: /\.(png|jpg|ttf|eot|svg|woff(2)?)$/, loader: "url-loader?limit=8192"},// inline base64 URLs for <=8k images
@@ -73,8 +73,8 @@ module.exports = {
 		}),
 		new webpack.DefinePlugin({
 			"__APP__": {
-				__ENV__: JSON.stringify("production"),
-				__APP_NAME__: __APP_NAME__
+				DEBUG: __DEV__,
+				ENV: JSON.stringify("production")
 			},
 		})
 	],
