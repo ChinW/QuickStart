@@ -1,0 +1,26 @@
+.outline{
+	.operation-controls{
+		margin: 10px 0px;
+		.form-inline{
+			label{
+				font-size: 14px;
+				vertical-align: middle;
+				margin-right: 5px;
+			}
+		}
+	}
+}
+
+.modal{
+	.outlineUploader{
+		margin: 10px auto;
+		padding: 0 30px;
+		text-align: center;
+		label{
+			font-size: 14px;
+		}
+	}
+	table{
+		font-size: 12px;
+	}
+}
