@@ -7,14 +7,14 @@ import "../css/global.scss"
 import { Router,Route,IndexRoute, useRouterHistory } from "react-router"
 import createHistory from "history/lib/createHashHistory"
 
-import App from "./component/app.comp"
-import Login from "./container/login.app"
-import Browse from "./container/browse.app"
+import App from "./component/app.comp";
+import Login from "./container/login.app";
+import Browse from "./container/browse.app";
 
 import configureStore from "./store/configureStore"
 
-const store = configureStore()
-const history = useRouterHistory(createHistory)({queryKey:false})
+const store = configureStore();
+const history = useRouterHistory(createHistory)({queryKey:false});
 
 ReactDOM.render(
 	<Provider store={store}>
@@ -28,5 +28,5 @@ ReactDOM.render(
 		</div>
 	</Provider>
 	,
-	document.getElementById("htmlBody")
+	document.getElementById("CONTENT")
 );

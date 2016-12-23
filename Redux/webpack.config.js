@@ -1,30 +1,52 @@
-var DEV = (process.env.NODE_ENV !== "production")
-	,outputPublicPath = "http://localhost:8081/build/"
-	,webpack = require("webpack")
-	,HtmlWebPackPlugin = require("html-webpack-plugin")
-	,commonsPlugin = new webpack.optimize.CommonsChunkPlugin({
-		name:"commons",
-		filename:"common.js"
-	})
-	,path = require("path")
-	,ExtractTextPlugin = require("extract-text-webpack-plugin")
-	,srcPath = path.join(__dirname, "src")
-	,webTitle = "My App"
-	,indexEntry = [srcPath + "/js/index.jsx"]
-
-// console.log("window.location.hostname", window.location.hostname)
-// if (inArray(window.location.hostname.substr(0, 5), ["local", "192.1", "127.0"])) {
-//     imageSrc = app.forum.attribute('chin.colorful-logo.imageUrl_development') || imageSrc;
+// var DEV = (process.env.NODE_ENV !== "production")
+// 	,outputPublicPath = "http://localhost:8081/build/"
+// 	,webpack = require("webpack")
+// 	,HtmlWebPackPlugin = require("html-webpack-plugin")
+// 	,commonsPlugin = new webpack.optimize.CommonsChunkPlugin({
+// 		name:"commons",
+// 		filename:"common.js"
+// 	})
+// 	,path = require("path")
+// 	,ExtractTextPlugin = require("extract-text-webpack-plugin")
+// 	,srcPath = path.join(__dirname, "src")
+// 	,webTitle = "My App"
+// 	,indexEntry = [srcPath + "/js/index.jsx"]
+//
+// // console.log("window.location.hostname", window.location.hostname)
+// // if (inArray(window.location.hostname.substr(0, 5), ["local", "192.1", "127.0"])) {
+// //     imageSrc = app.forum.attribute('chin.colorful-logo.imageUrl_development') || imageSrc;
+// // }
+// DEV = true;
+// if(DEV){
+// 	indexEntry = [
+// 			'webpack-dev-server/client?http://localhost:8081/',
+// 	    	'webpack/hot/only-dev-server',
+// 			srcPath + "/js/index.jsx"
+// 		]
+// }else{
+// 	outputPublicPath = "./";
 // }
-DEV = true;
-if(DEV){
-	indexEntry = [
-			'webpack-dev-server/client?http://localhost:8081/',
-	    	'webpack/hot/only-dev-server',
-			srcPath + "/js/index.jsx"
-		]
-}else{
-	outputPublicPath = "./";
+
+var webpack = require("webpack"),
+    HtmlWebPackPlugin = require("html-webpack-plugin"),
+    commonsPlugin = new webpack.optimize.CommonsChunkPlugin({
+        name: "common",
+        filename: "common.js"
+    }),
+    path = require("path"),
+    srcPath = path.join(__dirname, "src"),
+    ExtractTextPlugin = require("extract-text-webpack-plugin"),
+    projectName = 'My APP',
+    outputPublicPath = './',
+    indexEntry = [srcPath + "/js/index.jsx"];
+
+if(process.env.NODE_ENV !== "production"){
+    indexEntry = [
+        'webpack-dev-server/client?http://localhost:8081/',
+        'webpack/hot/only-dev-server',
+        srcPath + "/js/index.jsx"
+    ];
+    outputPublicPath = "http://localhost:8081/build/";
 }
 
 module.exports = {
@@ -64,12 +86,12 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoErrorsPlugin(),
 		new HtmlWebPackPlugin({
-			inject:true,
-			title:webTitle,
-			filename:"index.html",
+			inject: true,
+			title: projectName,
+			filename: "index.html",
 			template: srcPath + "/template/common.html",
-			hash:true,
-			chunks:["commons","index"]
+			hash: true,
+			chunks:["common", "index"]
 		}),
 		new webpack.ProvidePlugin({
 			$: "jquery",
@@ -77,16 +99,16 @@ module.exports = {
 			"window.jQuery": "jquery"
 		}),
 		new webpack.DefinePlugin({
-			"DEV": DEV,
-			"process.env": {
-			    NODE_ENV: JSON.stringify("production")
-			}
+            "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+            "process.env.APP": {
+                projectName: JSON.stringify(projectName)
+            }
 		})
 	],
 	devServer:{
 		historyApiFallback: true,
 		hot: true,
 		inline: true,
-		progress: true,
+		progress: true
 	}
 }

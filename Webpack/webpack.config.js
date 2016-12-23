@@ -5,22 +5,18 @@ var webpack = require("webpack"),
 		filename: "common.js"
 	}),
 	path = require("path"),
-	ExtractTextPlugin = require("extract-text-webpack-plugin");
+	srcPath = path.join(__dirname, "src"),
+    projectName = 'My APP',
+    outputPublicPath = './',
+    indexEntry = [srcPath + "/scripts/index.jsx"];
 
-var srcPath = path.join(__dirname, "src");
-var __DEV__ = process.env.NODE_ENV !== "production"; //Development Symbolic
-var __APP_NAME__ = "My APP";
-var outputPublicPath = "http://localhost:8081/build/";
-var indexEntry = [srcPath + "/scripts/index.jsx"];
-
-if(__DEV__){
-	indexEntry = [
-			'webpack-dev-server/client?http://localhost:8081/',
-	    	'webpack/hot/only-dev-server',
-			srcPath + "/scripts/index.jsx"
-		]
-}else{
-	outputPublicPath = "./";
+if(process.env.NODE_ENV !== "production"){
+    indexEntry = [
+        'webpack-dev-server/client?http://localhost:8081/',
+        'webpack/hot/only-dev-server',
+        srcPath + "/js/index.jsx"
+    ];
+    outputPublicPath = "http://localhost:8081/build/";
 }
 
 module.exports = {
@@ -40,7 +36,8 @@ module.exports = {
 			{ test: /\.(scss|sass)$/, loader: "style-loader!css-loader!autoprefixer-loader!sass-loader"},
 			// Below code used for extract css out
 			// { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")},
-			{ test: /\.(png|jpg|ttf|eot|svg|woff(2)?)$/, loader: "url-loader?limit=8192"},// inline base64 URLs for <=8k images
+			// inline base64 URLs for <=8k images
+			{ test: /\.(png|jpg|ttf|eot|svg|woff(2)?)$/, loader: "url-loader?limit=8192"},
             { test: /\.js$/, loader: 'babel-loader',query: {
                   presets: 'es2015',
                 },
@@ -52,8 +49,8 @@ module.exports = {
 		]
 	},
 	resolve:{
-		root: [process.cwd() + '', process.cwd() + '/node_modules'],
-		extensions: ["",".js",".jsx"]
+		root: [process.cwd(), process.cwd() + '/node_modules'],
+		extensions: ["", ".js", ".jsx"]
 	},
 	plugins:[
 		commonsPlugin,
@@ -61,9 +58,9 @@ module.exports = {
 		new webpack.NoErrorsPlugin(),
 		new HtmlWebPackPlugin({
 			inject: true,
-			title: __APP_NAME__,
+			title: projectName,
 			filename: "index.html",
-			template: srcPath + "/template/my-app.html",
+			template: srcPath + "/template/index.html",
 			hash: true,
 		}),
 		new webpack.ProvidePlugin({
@@ -72,9 +69,9 @@ module.exports = {
 			"window.jQuery": "jquery",
 		}),
 		new webpack.DefinePlugin({
-			"__APP__": {
-				DEBUG: __DEV__,
-				ENV: JSON.stringify("production")
+            "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+			"process.env.APP": {
+                projectName: JSON.stringify(projectName),
 			},
 		})
 	],
@@ -84,4 +81,4 @@ module.exports = {
 		inline: true,
 		progress: true,
 	}
-}
+};

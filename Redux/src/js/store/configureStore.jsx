@@ -4,12 +4,12 @@ import createLogger from 'redux-logger'
 import reducer from "../reducer/index.reducer"
 
 var createStoreWithMiddleware = null;
-if(DEV){
+if (process.env.NODE_ENV === 'development') {
 	createStoreWithMiddleware = applyMiddleware(
 		thunk
 		,createLogger()
 	)(createStore);
-}else{
+} else {
 	createStoreWithMiddleware = applyMiddleware(
 		thunk
 	)(createStore);

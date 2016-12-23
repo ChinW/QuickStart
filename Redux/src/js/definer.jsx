@@ -1,6 +1,6 @@
-import React from "react"
-import cookie from "react-cookie"
+import React from "react";
 
-export var serverURI = "//develop.app";
-if(!DEV)
-	serverURI = "//product.app"
+export let serverURI = "//develop.app";
+if(process.env.NODE_ENV === 'production') {
+    serverURI = "//product.app";
+}
