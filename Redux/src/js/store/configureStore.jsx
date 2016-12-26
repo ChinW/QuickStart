@@ -1,9 +1,9 @@
 import { createStore,applyMiddleware } from "redux"
 import thunk from "redux-thunk"
 import createLogger from 'redux-logger'
-import reducer from "../reducer/index.reducer"
+import reducer from "../index_redr"
 
-var createStoreWithMiddleware = null;
+let createStoreWithMiddleware = null;
 if (process.env.NODE_ENV === 'development') {
 	createStoreWithMiddleware = applyMiddleware(
 		thunk
@@ -16,12 +16,12 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 export default function configureStore(initialState){
-	const store = createStoreWithMiddleware(reducer,initialState)
+	const store = createStoreWithMiddleware(reducer,initialState);
 
 	if(module.hot){
 		// Enable Webpack hot module replacement for reducers
-		module.hot.accept("../reducer/index.reducer.jsx",() => {
-			const nextReducer = require("../reducer/index.reducer.jsx")
+		module.hot.accept("../index_redr.jsx",() => {
+			const nextReducer = require("../index_redr.jsx");
 			store.replaceReducer(nextReducer)
 		})
 	}
